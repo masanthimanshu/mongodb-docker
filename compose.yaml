@@ -1,0 +1,33 @@
+# Connect  to mongodb compass using -
+# mongodb://root:himanshu@<YOUR_IP_ADDRESS>:27017/
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=himanshu
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_BASICAUTH=true
+      - ME_CONFIG_BASICAUTH_USERNAME=himanshu
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin@1234
+
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=himanshu
+      - ME_CONFIG_MONGODB_URL=mongodb://root:himanshu@mongo:27017/
+
+volumes:
+  mongo-data:
